@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tezo Employee Directory</title>
+  <link rel="icon" type="image/x-icon" href="./assets/images/tezo-logo-min.png" />
+  <link rel="stylesheet" href="./CSS/common/employee.css" />
+  <link rel="stylesheet" href="./CSS/emp-directory.css" />
+  <link rel="stylesheet" href="./CSS/add-employee.css" />
+  <script type="module" src="./dist/index.js" defer></script>
+</head>
+
+<body>
+  <div class="wrapper d-grid">
+    <div class="sidebar-container flex-container flex-col jus-content-btw">
+      <div class="sidebar-main">
+        <div class="logo-container flex-container jus-content-btw">
+          <a href="./index.html">
+            <img src="./assets/images/tezo-logo.png" alt="tezo" class="logo p-5" />
+          </a>
+          <img src="./assets/images/handle.png" alt="arrow-icon" class="sidebar-min-icon" />
+        </div>
+
+        <div class="navbar-section w-100">
+          <div class="navbar-sec-heading p-5">All</div>
+          <div class="navbar-items">
+            <div class="navbar-item b-5 d-flex jus-content-btw">
+              <div class="navbar-item-logo d-flex">
+                <img src="./assets/icons/dashboard-black.svg" alt="Dashboard-icon" />
+                <div class="navbar-item-title">Dashboard</div>
+              </div>
+            </div>
+            <a href="./index.html" class="anchor">
+              <div class="navbar-item b-5 active d-flex jus-content-btw">
+                <div class="navbar-item-logo d-flex">
+                  <img src="./assets/icons/employee-red.svg" alt="employee-icon" />
+                  <div class="navbar-item-title">Employees</div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="navbar-section w-100 role-manage-sec">
+          <div class="navbar-sec-heading p-5">
+            <div class="md-heading">Role / User Management</div>
+            <div class="sm-heading">Role</div>
+          </div>
+          <div class="navbar-items">
+            <a href="./roles.html" class="anchor side-role-sec">
+              <div class="navbar-item side-role-sec flex-container jus-content-btw">
+                <div class="navbar-item-logo d-flex">
+                  <img src="./assets/icons/role-black.svg" alt="role-icon" />
+                  <div class="navbar-item-title">Role</div>
+                </div>
+                <div class="side-explore-arrow">
+                  <img src="./assets/icons/arrow-black.svg" alt="arrow-icon" />
+                </div>
+              </div>
+            </a>
+
+            <div class="navbar-item flex-container jus-content-btw">
+              <div class="navbar-item-logo d-flex">
+                <img src="./assets/icons/assign-user-black.svg" alt="" />
+                <div class="navbar-item-title">Access Rights</div>
+              </div>
+              <div class="side-explore-arrow">
+                <img src="./assets/icons/arrow-black.svg" alt="arrow-icon" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="app-update-container p-5">
+        <div class="app-update">
+          <div class="app-update-title">Install new update 2.3.1A</div>
+          <div class="app-update-desc">
+            Allow to launch the new update for the AD Application
+          </div>
+          <div class="app-update-btns">
+            <a href="#" class="dismiss-btn btn b-5">Dismiss</a>
+            <a href="#" title="accept" class="accept-btn btn b-5">Accept</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content flex-container flex-col jus-content-start w-100">
+      <div class="search-container d-flex jus-content-btw w-100 p-5">
+        <div class="search-bar flex-container">
+          <img src="./assets/images/bx-search.png" alt="search" class="find-icon" />
+          <input type="text" placeholder="Search" class="search-input" id="search-input" />
+        </div>
+
+        <div class="search-bar-icons d-flex">
+          <img src="./assets/icons/language.svg" alt="Language" class="Language-icon" />
+          <img src="./assets/icons/categories.svg" alt="categories" class="categories-icon" />
+          <img src="./assets/icons/mode.svg" alt="mode" class="mode-icon" />
+          <img src="./assets/icons/notifications.svg" alt="Notifications" class="Notifications-icon" />
+        </div>
+        <div class="admin-container flex-container">
+          <div class="admin-img-container flex-container">
+            <img src="./assets/images/profile.webp" alt="admin" class="admin-img" />
+          </div>
+          <div class="admin-detail d-flex flex-col">
+            <span class="admin-name">Jhon Abraham</span>
+            <span class="admin-role">Admin</span>
+          </div>
+          <img src="./assets/icons/arrow-black.svg" alt="arrow-icon" class="drop-down-arrow" />
+        </div>
+      </div>
+
+      <div class="employees-container d-flex jus-content-btw w-100">
+        <div class="employee d-flex flex-col jus-content-btw">
+          <span class="employee-heading">Employees</span>
+          <span class="employee-gen-desc">
+            Find all of your company's employee accounts and their associate
+            roles
+          </span>
+        </div>
+        <div class="employee-btns flex-container jus-content-btw">
+          <div class="export-btn btn flex-container">
+            <img src="./assets/icons/export.svg" alt="export-icon" />
+            <span>EXPORT</span>
+          </div>
+          <div class="add-employee btn flex-container">
+            <img src="./assets/icons/add.svg" alt="add-icon" />
+            <span>ADD EMPLOYEE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alphabet-filter d-flex jus-content-btw w-100">
+        <div class="toggle-filter-section d-flex" title="Hide Filter Section">
+          <img src="./assets/icons/filter-red.svg" alt="filter-icon" class="filter-icon" id="filter-icon" />
+        </div>
+        <ul class="alphabet-list flex-container w-100 jus-content-btw">
+          <li class="alphabet">A</li>
+          <li class="alphabet">B</li>
+          <li class="alphabet">C</li>
+          <li class="alphabet">D</li>
+          <li class="alphabet">E</li>
+          <li class="alphabet">F</li>
+          <li class="alphabet">G</li>
+          <li class="alphabet">H</li>
+          <li class="alphabet">I</li>
+          <li class="alphabet">J</li>
+          <li class="alphabet">K</li>
+          <li class="alphabet">L</li>
+          <li class="alphabet">M</li>
+          <li class="alphabet">N</li>
+          <li class="alphabet">O</li>
+          <li class="alphabet">P</li>
+          <li class="alphabet">Q</li>
+          <li class="alphabet">R</li>
+          <li class="alphabet">S</li>
+          <li class="alphabet">T</li>
+          <li class="alphabet">U</li>
+          <li class="alphabet">V</li>
+          <li class="alphabet">W</li>
+          <li class="alphabet">X</li>
+          <li class="alphabet">Y</li>
+          <li class="alphabet">Z</li>
+        </ul>
+      </div>
+
+      <div class="reset-filter w-100 d-flex jus-content-btw b-5">
+        <div class="filter-opts d-flex">
+          <div class="filter-icon-container flex-container">
+            <span>Filter</span>
+            <img src="./assets/icons/filter-lines.svg" alt="filter-lines" class="filter-icon" />
+          </div>
+
+          <div class="custom-select filter-select">
+            <input type="text" class="custom-input" id="status" name="status" placeholder="Status" readonly />
+            <div class="custom-options">
+              <label class="custom-option">
+                <input type="checkbox" value="Active" />
+                <span class="custom-checkmark"></span>
+                Active
+              </label>
+              <label class="custom-option">
+                <input type="checkbox" value="In Active" />
+                <span class="custom-checkmark"></span>
+                In Active
+              </label>
+            </div>
+          </div>
+
+          <div class="custom-select filter-select">
+            <input type="text" id="location" name="location" class="custom-input" placeholder="Location" readonly />
+            <div class="custom-options">
+              <label class="custom-option">
+                <input type="checkbox" value="HYDERABAD" />
+                <span class="custom-checkmark"></span>
+                HYDERABAD
+              </label>
+              <label class="custom-option">
+                <input type="checkbox" value="USA" />
+                <span class="custom-checkmark"></span>
+                USA
+              </label>
+            </div>
+          </div>
+
+          <div class="custom-select filter-select">
+            <input type="text" id="department" name="department" class="custom-input" placeholder="Department"
+              readonly />
+            <div class="custom-options d-flex flex-col">
+              <label class="custom-option">
+                <input type="checkbox" value="Product Engg" />
+                <span class="custom-checkmark"></span>
+                Product Engg
+              </label>
+              <label class="custom-option">
+                <input type="checkbox" value="UI/UX" />
+                <span class="custom-checkmark"></span>
+                UI/UX
+              </label>
+              <label class="custom-option">
+                <input type="checkbox" value="IT" />
+                <span class="custom-checkmark"></span>
+                IT
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="btn-container d-flex">
+          <button class="btn reset-btn">Reset</button>
+          <button class="btn apply-btn">Apply</button>
+        </div>
+      </div>
+
+      <div class="employee-table-container w-100">
+        <div class="table-add-delete d-flex jus-content-btw">
+          <div class="delete-opt-container flex-container">
+            <img src="./assets/icons/arrow-turn-left-down.svg" alt="arrow-turn-left-down" class="table-delete-arrow" />
+            <button class="btn table-delete-btn" disabled>Delete</button>
+          </div>
+          <div class="table-add-opt">
+            <img src="./assets/icons/table-add.svg" alt="table-add" />
+          </div>
+        </div>
+        <div class="employee-main-table">
+          <table class="employee-table">
+            <thead class="empl-table-header">
+              <tr class="emp-table-row">
+                <th class="table-heading">
+                  <input type="checkbox" class="employee-select" />
+                </th>
+                <th class="table-heading">
+                  <div>
+                    <span>USER</span>
+                    <img src="./assets/icons/sort.svg" alt="sort-icon" />
+                  </div>
+                </th>
+                <th class="table-heading">
+                  <div>
+                    <span>LOCATION</span>
+                    <img src="./assets/icons/sort.svg" alt="sort-icon" />
+                  </div>
+                </th>
+                <th class="table-heading">
+                  <div>
+                    <span>DEPARTMENT</span>
+                    <img src="./assets/icons/sort.svg" alt="sort-icon" />
+                  </div>
+                </th>
+                <th class="table-heading">
+                  <div>
+                    <span>ROLE</span>
+                    <img src="./assets/icons/sort.svg" alt="sort-icon" />
+                  </div>
+                </th>
+                <th class="table-heading">
+                  <div>
+                    <span>EMP NO</span>
+                    <img src="./assets/icons/sort.svg" alt="sort-icon" />
+                  </div>
+                </th>
+                <th class="table-heading employee-status-header">
+                  <div>
+                    <span>STATUS</span>
+                    <img src="./assets/icons/sort.svg" alt="sort-icon" />
+                  </div>
+                </th>
+                <th class="table-heading">
+                  <div>
+                    <span>JOIN DT</span>
+                    <img src="./assets/icons/sort.svg" alt="sort-icon" />
+                  </div>
+                </th>
+                <th class="table-heading">
+                  <button class="three-dots-header">
+                    <img src="./assets/icons/three-dot.svg" alt="three-dot" />
+                  </button>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="employee-table-body">
+              <tr class="no-records-container hide">
+                <td class="no-records-message" colspan="9">
+                  <div class="flex-container">No records Found</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="employee-form-container">
+        <span class="employee-form-heading">Add Employee</span>
+        <form class="employee-form">
+          <div class="employee-image-upload d-flex">
+            <div class="employee-image-preview flex-container">
+              <img src="./assets/images/dummy-profile-image.jpg" alt="dummy-profile-image"
+                class="employee-profile-img" />
+            </div>
+            <label for="empl-img" class="profile-upload-button btn b-5">Upload Profile Picture</label>
+            <input type="file" name="img" id="empl-img" accept="image/*" />
+          </div>
+          <div class="personal-info-container">
+            <span class="personal-info-heading">Personal Information</span>
+            <div class="personal-info">
+              <div class="emp-no-container">
+                <label class="form-label" for="new-emp-no">Emp Number</label><br />
+                <input type="text" placeholder="Text" id="new-emp-no" name="empNo" />
+                <span></span>
+              </div>
+              <div class="name-dob-container d-grid">
+                <div class="emp-first-name">
+                  <label class="form-label" for="new-emp-fname">First Name</label><br />
+                  <input type="text" placeholder="Text" name="fname" id="new-emp-fname" />
+                  <span></span>
+                </div>
+                <div class="emp-last-name">
+                  <label class="form-label" for="new-emp-lname">Last Name</label><br />
+                  <input type="text" placeholder="Text" name="lname" id="new-emp-lname" />
+                  <span></span>
+                </div>
+                <div class="emp-dob">
+                  <label class="form-label" for="new-emp-dob">Date of Birth</label><br />
+                  <div class="flex-container dob-input">
+                    <img src="./assets/icons/calender.svg" alt="" title="click to view calender"
+                      class="calender-icon" />
+                    <input type="text" name="dob" id="new-emp-dob" placeholder="select" />
+                  </div>
+                  <span></span>
+                </div>
+              </div>
+              <div class="emp-contact-container d-grid">
+                <div class="emp-email">
+                  <label class="form-label" for="new-emp-email">Email</label><br />
+                  <input type="email" placeholder=" Joe.j@tezo.com" id="new-emp-email" name="email" />
+                  <span></span>
+                </div>
+                <div class="emp-phone">
+                  <label class="form-label" for="new-emp-mobile">Mobile Number</label><br />
+                  <input type="number" maxlength="10" minlength="10" name="mobile" placeholder="0000000000" />
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="employement-info-container">
+            <span class="employement-info-head">Employement Information</span>
+            <div class="employemnt-details d-grid">
+              <div class="joining-date">
+                <label class="form-label" for="new-emp-join-date">Joining Date</label><br />
+                <input type="date" value="2023-12-08" name="joinDate" onfocus="(this.showPicker())"
+                  id="new-emp-join-date" />
+                <span></span>
+              </div>
+              <div class="emp-location-select">
+                <label class="form-label" for="select-location">Location </label><br />
+                <select id="select-location" value="" name="location">
+                  <option value="" selected hidden>Select Location</option>
+                  <option value="hyderabad">HYDERABAD</option>
+                  <option value="usa">USA</option>
+                </select>
+                <span></span>
+              </div>
+              <div class="emp-job-role">
+                <label class="form-label" for="select-role">Role</label><br />
+                <select id="select-role" value="" name="role"></select>
+                <span></span>
+              </div>
+              <div class="emp-dept">
+                <label class="form-label" for="select-dept">Department</label><br />
+                <select id="select-dept" name="dept" value="">
+                  <option value="" selected hidden>Selct Department</option>
+                  <option value="ui/ux">UI/UX</option>
+                  <option value="product engg">Product Engg</option>
+                  <option value="it">IT</option>
+                </select>
+                <span></span>
+              </div>
+              <div class="assign-manager">
+                <label class="form-label" for="select-manager">Assign Manager</label><br />
+                <select id="select-manager" name="managerAssigned">
+                  <option value="" selected hidden>Select Manager</option>
+                  <option value="manager 1">Manager 1</option>
+                  <option value="manager 2">Manager 2</option>
+                </select>
+                <span></span>
+              </div>
+              <div class="assign-project">
+                <label class="form-label" for="select-project">Assign Project</label><br />
+                <select id="select-project" name="projectAssigned">
+                  <option value="" selected hidden>Select Project</option>
+                  <option value="dummy project 1">Dummy Project 1</option>
+                  <option value="dummy project 2">Dummy Project 2</option>
+                </select>
+                <span></span>
+              </div>
+            </div>
+          </div>
+          <div class="cancel-add-btn d-flex">
+            <button class="cancel-new-empl b-5" type="button" value="cancel">
+              Cancel
+            </button>
+            <button class="insert-empl btn b-5" type="submit" value="add-Employee">
+              Add Employee
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="edit-employee-form-container">
+        <form class="edit-employee-form">
+          <div class="employee-image-upload d-flex">
+            <div class="employee-image-preview flex-container">
+              <img src="./assets/images/dummy-profile-image.jpg" alt="dummy-profile-image"
+                class="edit-employee-profile" />
+            </div>
+            <label for="edit-empl-img" class="profile-upload-btn btn b-5">Upload Profile Picture</label>
+            <input type="file" name="img" disabled id="edit-empl-img" accept="image/*" />
+          </div>
+          <div class="personal-info-container">
+            <span class="personal-info-heading">Personal Information</span>
+            <div class="personal-info">
+              <div class="emp-no-container">
+                <label class="form-label" for="edit-empl-no">Emp Number</label><br />
+                <input type="text" disabled placeholder=" Text" id="edit-empl-no" name="empNo" />
+                <span></span>
+              </div>
+              <div class="name-dob-container d-grid">
+                <div class="emp-first-name">
+                  <label class="form-label" for="edit-empl-fname">First Name</label><br />
+                  <input type="text" placeholder=" Text" disabled name="fname" id="edit-empl-fname" />
+                  <span></span>
+                </div>
+                <div class="emp-last-name">
+                  <label class="form-label" for="edit-empl-lname">Last Name</label><br />
+                  <input type="text" placeholder=" Text" disabled name="lname" id="edit-empl-lname" />
+                  <span></span>
+                </div>
+                <div class="emp-dob">
+                  <label class="form-label" for="edit-empl-dob">Date of Birth</label><br />
+                  <div class="d-flex dob-input">
+                    <input type="date" name="dob" disabled onfocus="(this.showPicker())" id="edit-empl-dob"
+                      placeholder="select" />
+                  </div>
+                  <span></span>
+                </div>
+              </div>
+              <div class="emp-contact-container d-grid">
+                <div class="emp-email">
+                  <label class="form-label" for="edit-empl-email">Email</label><br />
+                  <input type="email" placeholder=" Joe.j@technovert.com" disabled id="edit-empl-email" name="email" />
+                  <span></span>
+                </div>
+                <div class="emp-phone">
+                  <label class="form-label" for="edit-empl-mobile">Mobile Number</label><br />
+                  <input type="number" id="edit-empl-mobile" disabled maxlength="10" minlength="10" name="mobile"
+                    placeholder="0000000000" />
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="employement-info-container">
+            <span class="employement-info-head">Employement Information</span>
+            <div class="employemnt-details d-grid">
+              <div class="joining-date">
+                <label class="form-label" for="edit-empl-join-date">Joining Date</label><br />
+                <input type="date" name="joinDate" disabled onfocus="(this.showPicker())" id="edit-empl-join-date" />
+                <span></span>
+              </div>
+              <div class="emp-location-select">
+                <label class="form-label" for="edit-emp-location">Location </label><br />
+                <select id="edit-emp-location" disabled name="location">
+                  <option value="hyderabad">HYDERABAD</option>
+                  <option value="usa">USA</option>
+                </select>
+                <span></span><br />
+              </div>
+              <div class="emp-job-role">
+                <label class="form-label" for="edit-emp-role">Role</label><br />
+                <select id="edit-emp-role" disabled name="role"></select>
+                <span></span>
+              </div>
+              <div class="emp-dept">
+                <label class="form-label" for="edit-emp-dept">Department</label><br />
+                <select id="edit-emp-dept" disabled name="dept">
+                  <option value="ui/ux">UI/UX</option>
+                  <option value="product engg">Product Engg</option>
+                  <option value="it">IT</option>
+                </select>
+                <span></span>
+              </div>
+              <div class="assign-manager">
+                <label class="form-label" for="edit-emp-manager">Assign Manager</label><br />
+                <select id="edit-emp-manager" disabled name="managerAssigned">
+                  <option value="" selected hidden>Select</option>
+                  <option value="manager 1">Manager 1</option>
+                  <option value="manager 2">Manager 2</option>
+                </select>
+                <span></span>
+              </div>
+              <div class="assign-project">
+                <label class="form-label" for="edit-emp-project">Assign Project</label><br />
+                <select id="edit-emp-project" disabled name="projectAssigned">
+                  <option value="" selected hidden>Select</option>
+                  <option value="dummy project 1">Dummy Project 1</option>
+                  <option value="dummy project 2">Dummy Project 2</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="cancel-add-btn d-flex">
+            <button class="edit-form-close b-5" type="button" value="cancel">
+              Cancel
+            </button>
+            <button class="final-edit-empl btn b-5" type="button" value="edit-Employee">
+              Edit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="delete-pop-up flex-container flex-col">
+    <span></span>
+    <div class="cancel-delete-btn">
+      <button class="cancel-delete b-5">Cancel</button>
+      <button class="delete-row-btn btn b-5">Delete</button>
+    </div>
+    <img src="./assets/icons/cross.svg" alt="cross-icon" class="delete-dialog-cross" />
+  </div>
+</body>
+
+</html>
+
+<!-- <div class="toast flex-container">
+  <div class="toast-tick-container flex-container"><img src="./assets/icons/tick.svg" alt="tick"></div>
+  <span>Employee
+    Added</span>
+  <div class="toast-cross-container flex-container"><img src="./assets/icons/cross.svg" alt="cross"></div>
+</div> -->
