@@ -100,18 +100,10 @@ var allRoles:RoleSample[] = [
 ];
 
 document.addEventListener('DOMContentLoaded',()=>{
-    let storedAllEmps= localStorage.getItem('employeeList');
-    if (storedAllEmps) {
-        employeeList = JSON.parse(storedAllEmps);
-    }
-    else
-        localStorage.setItem('employeeList', JSON.stringify(employeeList));
-    let storedAllroles=localStorage.getItem('roles');
-    if (storedAllroles) {
-        allRoles = JSON.parse(storedAllroles);
-    }
-    else
-        localStorage.setItem('roles', JSON.stringify(allRoles));
+    let storedAllEmps= localStorage.getItem('employeeList');   
+    (storedAllEmps) ? employeeList = JSON.parse(storedAllEmps):localStorage.setItem('employeeList', JSON.stringify(employeeList));
+    let storedAllroles=localStorage.getItem('roles');  
+    (storedAllroles)?allRoles = JSON.parse(storedAllroles):localStorage.setItem('roles', JSON.stringify(allRoles));
     document.querySelector<HTMLImageElement>('.sidebar-min-icon')!.addEventListener("click", layoutChange);
     document.querySelector<HTMLButtonElement>('.dismiss-btn')!.addEventListener("click", dismissBtn);
     const sideSec:NodeListOf<HTMLElement> = document.querySelectorAll('.navbar-item');
@@ -148,52 +140,21 @@ function changeIcon(e:Event) {
     let div=e.currentTarget as HTMLDivElement;
     if (div.classList.contains("active") == false) {
         let imgSrc:string = div.querySelector<HTMLImageElement>('img')!.src;
-        if (imgSrc.indexOf("black") > -1) {
-            let newImgSrc = imgSrc.replace("black", "red");
-            div.getElementsByTagName('img')[0].src = newImgSrc;
-        }
-        else {
-            let newImgSrc = imgSrc.replace("red", "black");
-            div.getElementsByTagName('img')[0].src = newImgSrc;
-        }
+        (imgSrc.indexOf("black") > -1)?div.getElementsByTagName('img')[0].src =imgSrc.replace("black", "red"):div.getElementsByTagName('img')[0].src =imgSrc.replace("red", "black");
         let imgSrc2 = div.getElementsByTagName('img')[1]?.getAttribute('src');
         if (imgSrc2) {
-            if (imgSrc2.indexOf("black") > -1) {
-                let newImgSrc = imgSrc2.replace("black", "red");
-                div.getElementsByTagName('img')[1].src = newImgSrc;
-            }
-            else {
-                let newImgSrc = imgSrc2.replace("red", "black");
-                div.getElementsByTagName('img')[1].src = newImgSrc;
-            }
+            (imgSrc2.indexOf("black") > -1)?div.getElementsByTagName('img')[1].src =imgSrc2.replace("black", "red"):div.getElementsByTagName('img')[1].src =imgSrc2.replace("red", "black");
         }
-
     }
 }
 
-export default interface EmployeeSample{
-    img:string,
-    fname:string,
-    lname:string,
-    email:string,
-    location:string,
-    dept:string,
-    role?:string,
-    empNo:string,
-    status:string,
-    joiningDate:string,
-    dob:string,
-    projectAssigned:string,
-    managerAssigned:string,
-    mobile:number,
-    dots?:string,
+export interface EmployeeSample{ img:string, fname:string, lname:string, email:string, location:string, dept:string, role?:string, empNo:string, status:string, joiningDate:string, dob:string, projectAssigned:string, managerAssigned:string, mobile:number, dots?:string,
 }
 
 export interface RoleSample{
-    role:string,
-    roleId:string,
-    desc?:string,
-    dept:string,
-    location:string,
-    profiles?:EmployeeSample[]
+    role:string, roleId:string, desc?:string, dept:string, location:string, profiles?:EmployeeSample[]
+}
+
+export interface EventMap {
+    [selector: string]: { event: string, callback: EventListenerOrEventListenerObject };
 }

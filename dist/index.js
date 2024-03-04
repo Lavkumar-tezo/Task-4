@@ -1,4 +1,4 @@
-import { closeForm, openEditEmployeeForm, openEmployeeForm } from "./employee-form.js";
+import { closeForm, displayImagePreview, openEditEmployeeForm, openEmployeeForm } from "./employee-form.js";
 import { createNewElement, createNewElementWithAttr, addElementToParent, updateFilter, resetFilter, setElementAttribute } from "./module.js";
 var employeeList;
 var allRoles;
@@ -7,7 +7,7 @@ window.addEventListener("resize", function () {
     setTableHeight();
 });
 document.addEventListener("DOMContentLoaded", function () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+    var _a, _b;
     employeeList = JSON.parse(localStorage.getItem('employeeList'));
     allRoles = JSON.parse(localStorage.getItem('roles'));
     employeeList.forEach((empl) => {
@@ -23,24 +23,30 @@ document.addEventListener("DOMContentLoaded", function () {
         alphabet[i].addEventListener("click", (e) => { alphabetSort(e.currentTarget); });
     }
     updateFilter();
-    (_a = document.querySelector('.reset-btn')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', resetEmployeeFilter);
-    (_b = document.querySelector('.apply-btn')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', filterSearch);
-    (_c = document.querySelector('.delete-row-btn')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', deleteSelectedEmployee);
-    (_d = document.querySelector('.cancel-delete')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', hideDeleteDialogBox);
-    (_e = document.querySelector('.delete-dialog-cross')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', hideDeleteDialogBox);
-    (_f = document.querySelector('.employee-select')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', selectAllEmployee);
-    (_g = document.querySelector('.cancel-new-empl')) === null || _g === void 0 ? void 0 : _g.addEventListener('click', () => { closeForm(".employee-form-container", "select-role"); });
-    (_h = document.querySelector('.add-employee')) === null || _h === void 0 ? void 0 : _h.addEventListener('click', () => { openEmployeeForm(".employee-form-container", "select-role"); });
-    (_j = document.querySelector('.table-delete-btn')) === null || _j === void 0 ? void 0 : _j.addEventListener("click", (event) => {
-        showDeleteDialogBox(false);
-    });
-    (_k = document.querySelector('.edit-form-close')) === null || _k === void 0 ? void 0 : _k.addEventListener("click", () => {
+    const eventListeners = {
+        ".filter-icon": { event: "click", callback: toggleFilterSection },
+        '.reset-btn': { event: 'click', callback: resetEmployeeFilter },
+        '.apply-btn': { event: 'click', callback: filterSearch },
+        '.delete-row-btn': { event: 'click', callback: deleteSelectedEmployee },
+        '.cancel-delete': { event: 'click', callback: hideDeleteDialogBox },
+        '.delete-dialog-cross': { event: 'click', callback: hideDeleteDialogBox },
+        '.employee-select': { event: 'click', callback: selectAllEmployee },
+        '.cancel-new-empl': { event: 'click', callback: () => closeForm('.employee-form-container', 'select-role') },
+        '.add-employee': { event: 'click', callback: () => openEmployeeForm('.employee-form-container', 'select-role') },
+        '.table-delete-btn': { event: 'click', callback: () => showDeleteDialogBox(false) },
+    };
+    for (const selector in eventListeners) {
+        (_a = document.querySelector(selector)) === null || _a === void 0 ? void 0 : _a.addEventListener(eventListeners[selector].event, eventListeners[selector].callback);
+    }
+    (_b = document.querySelector('.edit-form-close')) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => {
         activateInput(true);
         document.querySelector('.final-edit-empl').innerText = "Edit";
         document.querySelector('.final-edit-empl').type = "button";
         localStorage.removeItem('selectedEmp');
         closeForm('.edit-employee-form-container', "edit-emp-role");
     });
+    document.querySelector('#empl-img').addEventListener('change', displayImagePreview);
+    document.querySelector('#edit-empl-img').addEventListener('change', displayImagePreview);
     let allHeaders = document.querySelectorAll(".employee-table th");
     for (let i = 1; i < allHeaders.length - 1; i++) {
         allHeaders[i].addEventListener("click", () => {
@@ -112,6 +118,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     document.querySelector('#search-input').addEventListener('keyup', tableSearch);
 });
+function toggleFilterSection() {
+    let filterSection = document.querySelector(".reset-filter");
+    let filterTitle = document.querySelector(".toggle-filter-section");
+    let filterIcon = document.querySelector(".filter-icon");
+    filterSection.style.display =
+        filterSection.style.display === "none" ? "flex" : "none";
+    if (filterTitle.getAttribute("title") === "Hide Filter Section") {
+        filterTitle.setAttribute("title", "Show Filter Section");
+        filterIcon.src = filterIcon.src.replace("red", "black");
+    }
+    else {
+        filterTitle.setAttribute("title", "Hide Filter Section");
+        filterIcon.src = filterIcon.src.replace("black", "red");
+    }
+}
 function selectAllEmployee() {
     let headCheckbox = document.querySelector(".employee-select");
     let table = document.querySelector(".employee-table-body");
@@ -128,7 +149,7 @@ function formatDate(date) {
     const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
 }
-function toggleEditOption(element) {
+export function toggleEditOption(element) {
     let td = element.parentElement;
     let dots = element.parentElement.children[1];
     dots.classList.toggle("hide");
@@ -148,7 +169,7 @@ function activateInput(flag = false) {
     let profileUploadBtn = document.querySelector('.profile-upload-btn');
     (!flag) ? profileUploadBtn.style.backgroundColor = "red" : profileUploadBtn.style.backgroundColor = "#f89191";
 }
-function toggleStatus(e) {
+export function toggleStatus(e) {
     let selectedRow = e.target;
     let status = selectedRow.parentElement.parentElement.parentElement.querySelector(".employee-status-value");
     let isActive = status.innerText === "Active";
@@ -167,14 +188,13 @@ function setTableHeight() {
     let resetFilterHeight = document.querySelector(".reset-filter").offsetHeight;
     let employeeTable = document.querySelector(".employee-table-container");
     employeeTable.style.minHeight = `${contentDivHeight - serachBarHeight - employeeContainerHeight - alphabetFilterHeight - resetFilterHeight - 100}px`;
-    console.log(employeeTable.style.minHeight);
 }
 function resetEmployeeFilter() {
     resetFilter();
     document.querySelectorAll(".alphabet.active-alphabet-filter").forEach((el) => el.classList.remove("active-alphabet-filter"));
     filterSearch();
 }
-function insertEmployee(employee) {
+export function insertEmployee(employee) {
     let tr = createNewElement("tr", ["emp-table-row"]);
     let tdCheckbox = createNewElement("td", ["selected-employee"]);
     let inputCheckbox = createNewElementWithAttr('input', [["type", "checkbox"], ["name", "select"]]);
@@ -243,7 +263,7 @@ function insertEmployee(employee) {
     let table = document.getElementsByClassName("employee-table-body")[0];
     table.appendChild(tr);
 }
-function checkEmployeeStatus() {
+export function checkEmployeeStatus() {
     let table, tr, i;
     table = document.getElementsByClassName("employee-table-body");
     tr = table[0].getElementsByClassName("emp-table-row");
@@ -383,7 +403,7 @@ function deleteSelectedEmployee() {
     headCheckbox.checked = false;
     hideDeleteDialogBox();
 }
-function deleteEmployeeRow(e) {
+export function deleteEmployeeRow(e) {
     let selctedRow = e.currentTarget;
     let row = selctedRow.parentElement.parentElement.parentElement;
     showDeleteDialogBox(true);

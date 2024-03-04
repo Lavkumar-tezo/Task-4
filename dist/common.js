@@ -99,17 +99,9 @@ var allRoles = [
 ];
 document.addEventListener('DOMContentLoaded', () => {
     let storedAllEmps = localStorage.getItem('employeeList');
-    if (storedAllEmps) {
-        employeeList = JSON.parse(storedAllEmps);
-    }
-    else
-        localStorage.setItem('employeeList', JSON.stringify(employeeList));
+    (storedAllEmps) ? employeeList = JSON.parse(storedAllEmps) : localStorage.setItem('employeeList', JSON.stringify(employeeList));
     let storedAllroles = localStorage.getItem('roles');
-    if (storedAllroles) {
-        allRoles = JSON.parse(storedAllroles);
-    }
-    else
-        localStorage.setItem('roles', JSON.stringify(allRoles));
+    (storedAllroles) ? allRoles = JSON.parse(storedAllroles) : localStorage.setItem('roles', JSON.stringify(allRoles));
     document.querySelector('.sidebar-min-icon').addEventListener("click", layoutChange);
     document.querySelector('.dismiss-btn').addEventListener("click", dismissBtn);
     const sideSec = document.querySelectorAll('.navbar-item');
@@ -144,24 +136,10 @@ function changeIcon(e) {
     let div = e.currentTarget;
     if (div.classList.contains("active") == false) {
         let imgSrc = div.querySelector('img').src;
-        if (imgSrc.indexOf("black") > -1) {
-            let newImgSrc = imgSrc.replace("black", "red");
-            div.getElementsByTagName('img')[0].src = newImgSrc;
-        }
-        else {
-            let newImgSrc = imgSrc.replace("red", "black");
-            div.getElementsByTagName('img')[0].src = newImgSrc;
-        }
+        (imgSrc.indexOf("black") > -1) ? div.getElementsByTagName('img')[0].src = imgSrc.replace("black", "red") : div.getElementsByTagName('img')[0].src = imgSrc.replace("red", "black");
         let imgSrc2 = (_a = div.getElementsByTagName('img')[1]) === null || _a === void 0 ? void 0 : _a.getAttribute('src');
         if (imgSrc2) {
-            if (imgSrc2.indexOf("black") > -1) {
-                let newImgSrc = imgSrc2.replace("black", "red");
-                div.getElementsByTagName('img')[1].src = newImgSrc;
-            }
-            else {
-                let newImgSrc = imgSrc2.replace("red", "black");
-                div.getElementsByTagName('img')[1].src = newImgSrc;
-            }
+            (imgSrc2.indexOf("black") > -1) ? div.getElementsByTagName('img')[1].src = imgSrc2.replace("black", "red") : div.getElementsByTagName('img')[1].src = imgSrc2.replace("red", "black");
         }
     }
 }

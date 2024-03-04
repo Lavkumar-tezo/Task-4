@@ -1,4 +1,4 @@
-import EmployeeSample from "./common.js";
+import {EmployeeSample} from "./common.js";
 export function changeElementDisplay(element: string, value: string): void {
     document.querySelector<HTMLElement>(`${element}`)!.style.display = value;
 }
@@ -156,86 +156,4 @@ export function resetFilter() {
     allFilterCheckbox.forEach((input) =>input.checked = false);
     
 }
-
-// export function validateField(form, flag = true, mode) {
-//     const dangerInputName = {
-//       "img": "Image",
-//       "fname": "First Name",
-//       "lname": "Last Name",
-//       "email": "Email",
-//       "location": "Location",
-//       "dept": "Department",
-//       "empNo": "Emp Number",
-//       "status": "Status",
-//       "joinDate": "Join Date",
-//       "dob": "Date of Birth",
-//       "projectAssigned": "Project",
-//       "managerAssigned": "Manager",
-//       "mobile": "Mobile Number",
-//     }
-//     let formInput = form.getElementsByTagName("input");
-//     let check = 1;
-//     for (let key in formInput) {
-//       let element = formInput[key];
-//       if (element.name == 'empNo') {
-//         let empNo = element.value.toUpperCase()
-//         if (empNo == "") {
-//           showValidInput(element, `&#9888; ${dangerInputName[element.name]} is required`, flag);
-//           check = 0
-//         }
-//         else if (!empNo.startsWith("TZ")) {
-//           showValidInput(element, `&#9888; employee Id Should start with TZ`, flag)
-//           check = 0;
-//         }
-//         else if (!empNo.match(/^TZ[0-9]+$/)) {
-//           showValidInput(element, `&#9888; ${dangerInputName[element.name]} should have number starting with TZ`, flag);
-//           check = 0
-//         }
-//         else if (empNo.startsWith("TZ") && mode == 'add') {
-//           for (let i = 0; i < employeeList.length; i++) {
-//             if (employeeList[i].empNo == empNo) {
-//               showValidInput(element, `&#9888;This Emp Number is already taken`, flag)
-//               check = 0;
-//             }
-//           }
-//         }
-  
-//       }
-//       else if (element.type == 'number') {
-//         let empNum = element.value
-//         if (empNum == "") {
-//           showValidInput(element, `&#9888; ${dangerInputName[element.name]} is required`, flag);
-//           check = 0
-//         }
-//         else if (empNum.length != 10) {
-//           showValidInput(element, `&#9888; Mobile number should be of 10 digit`, true)
-//           check = 0;
-//         }
-//       }
-//       else if (element.type == 'email') {
-//         let email = element.value.toLowerCase();
-//         if (!email.endsWith("tezo.com")) {
-//           showValidInput(element, `&#9888;Email should be of tezo`, flag)
-//           check = 0;
-//         }
-//       }
-//       if (element.value == "" && element.name != "dob" && element.type != "file") {
-//         showValidInput(element, `&#9888; ${dangerInputName[element.name]} is required`, flag);
-//         check = 0;
-//       }
-//       else if (element.value == "" && element.type != "file") {
-//         showValidInput(element.parentElement, `&#9888; ${dangerInputName[element.name]} is required`, flag);
-//         check = 0;
-//       }
-//     }
-//     let formSelect = form.getElementsByTagName('select');
-//     for (let key in formSelect) {
-//       let element = formSelect[key];
-//       if (element.value == "" && element.name != 'role') {
-//         showValidInput(element, `&#9888; ${dangerInputName[element.name]} is required field`, flag)
-//         check = 0;
-//       }
-//     }
-//     return check;
-//   }
 
