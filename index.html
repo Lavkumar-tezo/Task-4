@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./CSS/common/employee.css" />
   <link rel="stylesheet" href="./CSS/emp-directory.css" />
   <link rel="stylesheet" href="./CSS/add-employee.css" />
+  <script type="module" src="./dist/common.js" defer></script>
   <script type="module" src="./dist/index.js" defer></script>
 </head>
 
@@ -418,7 +419,7 @@
             </div>
           </div>
           <div class="cancel-add-btn d-flex">
-            <button class="cancel-new-empl b-5" type="button" value="cancel">
+            <button class="cancel-new-empl b-5" type="reset" value="cancel">
               Cancel
             </button>
             <button class="insert-empl btn b-5" type="submit" value="add-Employee">
@@ -531,7 +532,7 @@
             </div>
           </div>
           <div class="cancel-add-btn d-flex">
-            <button class="edit-form-close b-5" type="button" value="cancel">
+            <button class="edit-form-close b-5" type="reset" value="cancel">
               Cancel
             </button>
             <button class="final-edit-empl btn b-5" type="button" value="edit-Employee">
@@ -553,10 +554,3 @@
 </body>
 
 </html>
-
-<!-- <div class="toast flex-container">
-  <div class="toast-tick-container flex-container"><img src="./assets/icons/tick.svg" alt="tick"></div>
-  <span>Employee
-    Added</span>
-  <div class="toast-cross-container flex-container"><img src="./assets/icons/cross.svg" alt="cross"></div>
-</div> -->
