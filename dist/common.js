@@ -4,7 +4,7 @@ var employeeList = [
     {
         "img": "./assets/images/profile.webp",
         "fname": "Rajesh",
-        "lname": "Singhg",
+        "lname": "Singh",
         "email": "rajesh.singh@tezo.com",
         "location": "HYDERABAD",
         "dept": "Product Engg",
@@ -98,6 +98,7 @@ var allRoles = [
     }
 ];
 document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.logo').src = (window.matchMedia("(max-width: 720px)").matches) ? "./assets/images/tezo-logo-min.png" : "./assets/images/tezo-logo.png";
     let storedAllEmps = localStorage.getItem('employeeList');
     (storedAllEmps) ? employeeList = JSON.parse(storedAllEmps) : localStorage.setItem('employeeList', JSON.stringify(employeeList));
     let storedAllroles = localStorage.getItem('roles');
@@ -110,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sideSec[i].addEventListener('mouseout', (e) => { changeIcon(e); });
     }
 });
+window.addEventListener("resize", () => document.querySelector('.logo').src = (window.matchMedia("(max-width: 720px)").matches) ? "./assets/images/tezo-logo-min.png" : "./assets/images/tezo-logo.png");
 function layoutChange() {
     if (window.screen.width > 720) {
         document.querySelector('.wrapper').style.gridTemplateColumns = !isSidebarCollpased ? "1fr 20fr" : "1fr 4.5fr";
@@ -136,10 +138,10 @@ function changeIcon(e) {
     let div = e.currentTarget;
     if (div.classList.contains("active") == false) {
         let imgSrc = div.querySelector('img').src;
-        (imgSrc.indexOf("black") > -1) ? div.getElementsByTagName('img')[0].src = imgSrc.replace("black", "red") : div.getElementsByTagName('img')[0].src = imgSrc.replace("red", "black");
+        div.getElementsByTagName('img')[0].src = (imgSrc.indexOf("black") > -1) ? imgSrc.replace("black", "red") : imgSrc.replace("red", "black");
         let imgSrc2 = (_a = div.getElementsByTagName('img')[1]) === null || _a === void 0 ? void 0 : _a.getAttribute('src');
         if (imgSrc2) {
-            (imgSrc2.indexOf("black") > -1) ? div.getElementsByTagName('img')[1].src = imgSrc2.replace("black", "red") : div.getElementsByTagName('img')[1].src = imgSrc2.replace("red", "black");
+            div.getElementsByTagName('img')[1].src = (imgSrc2.indexOf("black") > -1) ? imgSrc2.replace("black", "red") : imgSrc2.replace("red", "black");
         }
     }
 }

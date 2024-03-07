@@ -1,4 +1,4 @@
-import { checkEmployeeStatus, deleteEmployeeRow, insertEmployee, toggleEditOption, toggleStatus } from "./index.js";
+import { activateEmployeeInput, insertEmployee } from "./index.js";
 import { changeElementDisplay, createNewElementWithAttr, createToastMessage, setElementAttribute, showValidInput } from "./module.js";
 var employeeList;
 var allRoles;
@@ -14,31 +14,20 @@ export function addRoleOption(form, element) {
         select.appendChild(option);
     });
 }
-export function displayImagePreview() {
-    let imageInput = document.querySelector("#empl-img");
-    if (imageInput.files) {
-        let image1 = imageInput.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(image1);
-        reader.onload = function () {
-            document.querySelector('.employee-profile-img').src = reader.result;
-        };
-    }
-    imageInput = document.querySelector("#edit-empl-img");
-    if (imageInput.files) {
-        let image2 = imageInput.files[0];
+export function displayImagePreview(inputClass, outputClass) {
+    let imageInput2 = document.querySelector(`${inputClass}`);
+    if (imageInput2.files) {
+        let image2 = imageInput2.files[0];
         const reader = new FileReader();
         reader.readAsDataURL(image2);
         reader.onload = function () {
-            document.querySelector('.edit-employee-profile').src = reader.result;
+            document.querySelector(`${outputClass}`).src = reader.result;
         };
     }
 }
 export function closeForm(formClass, selectClass) {
     let elementsToShow = ["employees-container", "alphabet-filter", "reset-filter",];
-    elementsToShow.forEach((elementClass) => {
-        changeElementDisplay(`.${elementClass}`, 'flex');
-    });
+    elementsToShow.forEach((elementClass) => changeElementDisplay(`.${elementClass}`, 'flex'));
     let form = document.querySelector(`${formClass}`);
     form.querySelector(`#${selectClass}`).innerHTML = "";
     changeElementDisplay(`${formClass}`, 'none');
@@ -73,19 +62,16 @@ export function openEditEmployeeForm(formClass, selectClass, e) {
         };
         for (const selector in setFormData) {
             const element = document.querySelector(selector);
-            if (element) {
-                element.value = setFormData[selector];
-            }
+            (element) ? element.value = setFormData[selector] : "";
         }
-        let selectedEmpRole = allRoles.filter(function (role) {
-            return role.roleId == (selectedEmp === null || selectedEmp === void 0 ? void 0 : selectedEmp.role);
-        });
+        let selectedEmpRole = allRoles.filter((role) => role.roleId == (selectedEmp === null || selectedEmp === void 0 ? void 0 : selectedEmp.role));
         document.querySelector('#edit-emp-role').value = (selectedEmpRole.length != 0) ? selectedEmpRole[0].role.toLowerCase() : "";
         let selectedEmpDOB = `${selectedEmp.dob.substring(6, 11)}-${selectedEmp.dob.substring(3, 5)}-${selectedEmp.dob.substring(0, 2)}`;
         setElementAttribute('#edit-empl-dob', 'value', selectedEmpDOB);
         let selectedEmpJoinDate = `${selectedEmp.joiningDate.substring(6, 11)}-${selectedEmp.joiningDate.substring(3, 5)}-${selectedEmp.joiningDate.substring(0, 2)}`;
         setElementAttribute('#edit-empl-join-date', 'value', selectedEmpJoinDate);
         setElementAttribute('.edit-employee-profile', 'src', selectedEmp.img);
+        activateEmployeeInput(true);
     }
 }
 export function openEmployeeForm(formClass, selectClass) {
@@ -98,6 +84,7 @@ export function openEmployeeForm(formClass, selectClass) {
     addRoleOption(form, selectClass);
 }
 export function validateField(form, flag = true, mode) {
+    employeeList = JSON.parse(localStorage.getItem('employeeList'));
     const dangerInputName = {
         "img": "Image",
         "fname": "First Name",
@@ -179,43 +166,65 @@ export function validateField(form, flag = true, mode) {
 }
 export function addEmployee(event, mode) {
     event.preventDefault();
-    let form;
-    if (mode == 'add') {
-        form = document.querySelector(".employee-form");
-    }
-    else {
-        form = document.querySelector(".edit-employee-form");
-    }
+    let form = (mode == 'add') ? document.querySelector(".employee-form") : document.querySelector(".edit-employee-form");
     let check = validateField(form, true, mode);
     if (check == 0)
         return;
-    let image;
-    let imagefile = (mode == 'add') ? document.querySelector("#empl-img").files : document.querySelector("edit-empl-img").files;
-    if (imagefile)
-        image = imagefile[0];
+    let image = (mode == 'add') ? document.querySelector('.employee-profile-img').src : document.querySelector('.edit-employee-profile').src;
+    let newFormObject = {};
+    const formElements = Array.from(form.elements);
+    formElements.forEach((element) => {
+        if (element.type == "date") {
+            let value = element.value.split("-");
+            newFormObject[element.name] = `${value[2]}/${value[1]}/${value[0]}`;
+        }
+        else if (element.type == "file") {
+            newFormObject[element.name] = (mode == 'add') ? document.querySelector('.employee-profile-img').src : document.querySelector('.edit-employee-profile').src;
+        }
+        else if (element.name == 'role') {
+            allRoles = JSON.parse(localStorage.getItem('roles'));
+            let allotedRoleId = allRoles.filter(function (obj) {
+                if (obj.role.toLowerCase() == element.value.toLowerCase())
+                    return obj.roleId;
+            });
+            if (allotedRoleId.length != 0)
+                newFormObject[element.name] = allotedRoleId[0].roleId;
+            else
+                newFormObject[element.name] = '';
+        }
+        else if (element.name == 'empNo') {
+            newFormObject[element.name] = element.value.toUpperCase();
+        }
+        else if (element.tagName.toLowerCase() == "select") {
+            let optionText = element.options[element.selectedIndex].innerText;
+            newFormObject[element.name] = optionText;
+        }
+        else if (element.type != "submit") {
+            newFormObject[element.name] = element.value;
+        }
+    });
     let newObject = {
-        img: '',
-        fname: '',
-        lname: '',
-        email: '',
-        location: '',
-        dept: '',
-        empNo: '',
-        status: '',
-        joiningDate: '',
-        dob: '',
-        projectAssigned: '',
-        managerAssigned: '',
-        mobile: 12
+        img: image,
+        fname: newFormObject.fname,
+        lname: newFormObject.lname,
+        email: newFormObject.email,
+        location: newFormObject.location.toString().toUpperCase(),
+        dept: newFormObject.dept,
+        empNo: newFormObject.empNo,
+        joiningDate: newFormObject.joiningDate.toString().split('-').reverse().join('/'),
+        dob: newFormObject.dob,
+        projectAssigned: newFormObject.projectAssigned,
+        managerAssigned: newFormObject.managerAssigned,
+        mobile: (newFormObject.mobile),
+        status: 'Active',
+        role: newFormObject.role
     };
     if (check) {
         if (mode == "edit") {
             let rowId = JSON.parse(localStorage.getItem("selectedEmp"));
-            let rowIndex = employeeList.findIndex((employee) => employee.empNo == rowId);
+            let rowIndex = employeeList.findIndex(employee => employee.empNo == rowId);
             document.querySelector('.employee-table-body').deleteRow(rowIndex + 1);
-            let newEmps = employeeList.filter(function (obj) {
-                return obj.empNo !== rowId;
-            });
+            let newEmps = employeeList.filter(employee => employee.empNo !== rowId);
             employeeList = newEmps;
             localStorage.setItem('employeeList', JSON.stringify(employeeList));
             localStorage.removeItem("selectedEmp");
@@ -226,15 +235,6 @@ export function addEmployee(event, mode) {
         }
         document.querySelector('.final-edit-empl').innerText = 'Edit';
         localStorage.setItem('employeeList', JSON.stringify(employeeList));
-        let row = document.getElementsByClassName("three-dots");
-        row[row.length - 1].addEventListener("click", (e) => toggleEditOption(e.target));
-        let rowDelete = document.getElementsByClassName("row-delete");
-        rowDelete[rowDelete.length - 1].addEventListener("click", deleteEmployeeRow);
-        let rowStatus = document.getElementsByClassName("status-change");
-        rowStatus[rowStatus.length - 1].addEventListener("click", toggleStatus);
-        let rowEditForm = document.getElementsByClassName("row-edit");
-        rowEditForm[rowEditForm.length - 1].addEventListener("click", (e) => { openEditEmployeeForm(".edit-employee-form-container", "edit-emp-role", e); });
-        checkEmployeeStatus();
         if (mode == 'add') {
             closeForm('.employee-form-container', 'select-role');
             createToastMessage('Employee Added');

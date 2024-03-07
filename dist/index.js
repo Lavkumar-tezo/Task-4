@@ -1,18 +1,13 @@
-import { closeForm, displayImagePreview, openEditEmployeeForm, openEmployeeForm } from "./employee-form.js";
+import { addEmployee, closeForm, displayImagePreview, openEditEmployeeForm, openEmployeeForm } from "./employee-form.js";
 import { createNewElement, createNewElementWithAttr, addElementToParent, updateFilter, resetFilter, setElementAttribute } from "./module.js";
 var employeeList;
 var allRoles;
-window.addEventListener("resize", function () {
-    document.querySelector('.logo').src = (window.matchMedia("(max-width: 720px)").matches) ? "./assets/images/tezo-logo-min.png" : "./assets/images/tezo-logo.png";
-    setTableHeight();
-});
+window.addEventListener("resize", () => setTableHeight);
 document.addEventListener("DOMContentLoaded", function () {
-    var _a, _b;
+    var _a, _b, _c;
     employeeList = JSON.parse(localStorage.getItem('employeeList'));
     allRoles = JSON.parse(localStorage.getItem('roles'));
-    employeeList.forEach((empl) => {
-        insertEmployee(empl);
-    });
+    employeeList.forEach(employee => insertEmployee(employee));
     setTableHeight();
     localStorage.removeItem('selectedEmp');
     localStorage.removeItem('selectedAlpha');
@@ -23,6 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
         alphabet[i].addEventListener("click", (e) => { alphabetSort(e.currentTarget); });
     }
     updateFilter();
+    document.querySelector('.export-btn').addEventListener('click', exportTableToExcel);
+    (_a = document.querySelector('.employee-form')) === null || _a === void 0 ? void 0 : _a.addEventListener("submit", (event) => addEmployee(event, 'add'));
     const eventListeners = {
         ".filter-icon": { event: "click", callback: toggleFilterSection },
         '.reset-btn': { event: 'click', callback: resetEmployeeFilter },
@@ -36,17 +33,17 @@ document.addEventListener("DOMContentLoaded", function () {
         '.table-delete-btn': { event: 'click', callback: () => showDeleteDialogBox(false) },
     };
     for (const selector in eventListeners) {
-        (_a = document.querySelector(selector)) === null || _a === void 0 ? void 0 : _a.addEventListener(eventListeners[selector].event, eventListeners[selector].callback);
+        (_b = document.querySelector(selector)) === null || _b === void 0 ? void 0 : _b.addEventListener(eventListeners[selector].event, eventListeners[selector].callback);
     }
-    (_b = document.querySelector('.edit-form-close')) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => {
-        activateInput(true);
+    (_c = document.querySelector('.edit-form-close')) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => {
+        activateEmployeeInput(true);
         document.querySelector('.final-edit-empl').innerText = "Edit";
         document.querySelector('.final-edit-empl').type = "button";
         localStorage.removeItem('selectedEmp');
         closeForm('.edit-employee-form-container', "edit-emp-role");
     });
-    document.querySelector('#empl-img').addEventListener('change', displayImagePreview);
-    document.querySelector('#edit-empl-img').addEventListener('change', displayImagePreview);
+    document.querySelector('#empl-img').addEventListener('change', () => displayImagePreview("#empl-img", ".employee-profile-img"));
+    document.querySelector('#edit-empl-img').addEventListener('change', () => displayImagePreview("#edit-empl-img", '.edit-employee-profile'));
     let allHeaders = document.querySelectorAll(".employee-table th");
     for (let i = 1; i < allHeaders.length - 1; i++) {
         allHeaders[i].addEventListener("click", () => {
@@ -88,32 +85,15 @@ document.addEventListener("DOMContentLoaded", function () {
     dobInput.setAttribute("max", todayDate);
     let empDobInput = document.querySelector("#edit-empl-dob");
     empDobInput.setAttribute('max', todayDate);
-    let allRowEdit = document.querySelectorAll(".three-dots");
-    allRowEdit.forEach((row) => {
-        row.addEventListener("click", (e) => toggleEditOption(e.currentTarget));
-    });
-    let rowsDelete = document.querySelectorAll(".row-delete");
-    rowsDelete.forEach((row) => {
-        row.addEventListener("click", deleteEmployeeRow);
-    });
-    let rowsStatus = document.querySelectorAll(".status-change");
-    rowsStatus.forEach((row) => {
-        let parentRow = row.parentElement.parentElement.parentElement;
-        let rowStatusValue = parentRow.querySelector('.employee-status').innerText.toLowerCase();
-        (rowStatusValue == 'active') ? rowStatusValue = "In active" : rowStatusValue = "Active";
-        row.innerText = `Mark as ${rowStatusValue}`;
-        row.addEventListener("click", (e) => toggleStatus(e));
-    });
-    let allRowEditForm = document.querySelectorAll(".row-edit");
-    allRowEditForm.forEach((row) => row.addEventListener("click", (e) => { openEditEmployeeForm(".edit-employee-form-container", "edit-emp-role", e); }));
     document.querySelector('.final-edit-empl').addEventListener("click", (event) => {
         let formBtnElement = event.target;
         if (formBtnElement.innerText == "Edit") {
             formBtnElement.innerText = "Apply Changes";
-            activateInput();
+            activateEmployeeInput();
         }
         else {
             formBtnElement.type = "submit";
+            addEmployee(event, 'edit');
         }
     });
     document.querySelector('#search-input').addEventListener('keyup', tableSearch);
@@ -151,21 +131,17 @@ function formatDate(date) {
 }
 export function toggleEditOption(element) {
     let td = element.parentElement;
-    let dots = element.parentElement.children[1];
+    let dots = td.children[1];
     dots.classList.toggle("hide");
     document.addEventListener("click", function (event) {
         let triggredRow = event.target;
         let isOutside = !td.contains(triggredRow);
-        if (isOutside) {
-            dots.classList.add("hide");
-        }
+        (isOutside) ? dots.classList.add("hide") : "";
     });
 }
-function activateInput(flag = false) {
+export function activateEmployeeInput(flag = false) {
     let allDisabledInputs = ['edit-empl-fname', 'edit-empl-lname', 'edit-empl-dob', 'edit-empl-email', 'edit-empl-mobile', 'edit-empl-join-date', 'edit-emp-location', 'edit-emp-dept', 'edit-emp-role', 'edit-emp-manager', 'edit-emp-project', 'edit-empl-img'];
-    allDisabledInputs.forEach((input) => {
-        document.querySelector(`#${input}`).disabled = flag;
-    });
+    allDisabledInputs.forEach((input) => document.querySelector(`#${input}`).disabled = flag);
     let profileUploadBtn = document.querySelector('.profile-upload-btn');
     (!flag) ? profileUploadBtn.style.backgroundColor = "red" : profileUploadBtn.style.backgroundColor = "#f89191";
 }
@@ -191,7 +167,7 @@ function setTableHeight() {
 }
 function resetEmployeeFilter() {
     resetFilter();
-    document.querySelectorAll(".alphabet.active-alphabet-filter").forEach((el) => el.classList.remove("active-alphabet-filter"));
+    document.querySelectorAll(".alphabet.active-alphabet-filter").forEach(alpha => alpha.classList.remove("active-alphabet-filter"));
     filterSearch();
 }
 export function insertEmployee(employee) {
@@ -204,9 +180,7 @@ export function insertEmployee(employee) {
     let tdProfile = createNewElement("td", ["d-flex", "jus-content-start", "emp-profile"]);
     let tdProfileContainer = createNewElement("div", ["d-flex", 'empl-profile-detail']);
     let profilDiv = createNewElement("div", ["emp-profile-container", "flex-container"]);
-    if (!employee.img) {
-        employee.img = "./assets/images/dummy-profile-image.jpg";
-    }
+    (!employee.img) ? employee.img = "./assets/images/dummy-profile-image.jpg" : "";
     let imgProfile = createNewElementWithAttr("img", [["src", employee.img], ["alt", "employee-image"]]);
     imgProfile.classList.add("employee-img");
     profilDiv.appendChild(imgProfile);
@@ -230,8 +204,7 @@ export function insertEmployee(employee) {
     if (employee.role) {
         let roleName = '';
         for (let i = 0; i < allRoles.length; i++) {
-            if (allRoles[i].roleId == employee.role)
-                roleName = allRoles[i].role;
+            (allRoles[i].roleId == employee.role) ? roleName = allRoles[i].role : "";
         }
         roleDiv.textContent = roleName;
     }
@@ -248,26 +221,29 @@ export function insertEmployee(employee) {
     tdJoinDate.textContent = employee.joiningDate;
     let tdDots = createNewElement('td', ['row-edit-container']);
     let btnDots = createNewElement('button', ['three-dots']);
+    btnDots.addEventListener("click", (e) => toggleEditOption(e.currentTarget));
     let imgDots = createNewElementWithAttr('img', [["src", "./assets/icons/three-dot.svg"], ["alt", "three-dot"]]);
     btnDots.appendChild(imgDots);
     let editDiv = createNewElement('div', ["empl-edit-options", "d-flex", "flex-col", "hide"]);
     let option1 = createNewElement('span', ['row-edit']);
     option1.innerText = "Edit";
+    option1.addEventListener("click", (e) => { openEditEmployeeForm(".edit-employee-form-container", "edit-emp-role", e); });
     let option2 = createNewElement('span', ['row-delete']);
     option2.innerText = "Delete";
+    option2.addEventListener("click", deleteEmployeeRow);
     let option3 = createNewElement('option', ['status-change']);
-    option3.innerText = "Mark as In Active";
+    option3.innerText = (spanStatus.innerText == "Active") ? "Mark as In Active" : "Mark as Active";
+    option3.addEventListener("click", (e) => toggleStatus(e));
     editDiv = addElementToParent(editDiv, option1, option2, option3);
     tdDots = addElementToParent(tdDots, btnDots, editDiv);
     tr = addElementToParent(tr, tdCheckbox, tdProfile, tdLocation, tdDepartment, tdRole, tdEmpNo, tdStatus, tdJoinDate, tdDots);
     let table = document.getElementsByClassName("employee-table-body")[0];
     table.appendChild(tr);
 }
-export function checkEmployeeStatus() {
-    let table, tr, i;
-    table = document.getElementsByClassName("employee-table-body");
-    tr = table[0].getElementsByClassName("emp-table-row");
-    for (i = 0; i < tr.length; i++) {
+function checkEmployeeStatus() {
+    let table = document.querySelector(".employee-table-body");
+    let tr = table.querySelectorAll(".emp-table-row");
+    for (let i = 0; i < tr.length; i++) {
         let employeeStatus = tr[i].querySelector(".employee-status-value");
         if (employeeStatus.textContent.toLowerCase() == "active") {
         }
@@ -291,18 +267,15 @@ function alphabetSort(element) {
         return;
     }
     localStorage.setItem('selectedAlpha', JSON.stringify(alphabet));
-    document
-        .querySelectorAll(".alphabet")
-        .forEach((alphabet) => alphabet.classList.remove("active-alphabet-filter"));
+    document.querySelectorAll(".alphabet").forEach(alphabet => alphabet.classList.remove("active-alphabet-filter"));
     element.classList.add("active-alphabet-filter");
     filterSearch();
 }
 function filterCheck(tr, check, alpha = 'none') {
     if (alpha != 'none') {
-        let rowName = tr.querySelector(".employee-name").textContent.toLowerCase();
-        return (rowName.startsWith(alpha));
+        return (tr.querySelector(".employee-name").textContent.toLowerCase().startsWith(alpha));
     }
-    let status = document.getElementById(check);
+    let status = document.querySelector(`#${check}`);
     if (!status.value)
         return true;
     let selectedStatus = [];
@@ -358,8 +331,8 @@ function findSelectedRow() {
     else {
         let headCheckbox = document.querySelector(".employee-select");
         headCheckbox.checked = (count == employeeList.length);
-        return count;
     }
+    return count;
 }
 function changeTableDeleteBtnBG(color, flag = true) {
     let tableDeleteBtn = document.querySelector(".table-delete-btn");
@@ -384,8 +357,7 @@ function deleteSelectedEmployee() {
     let deleteRow = localStorage.getItem('deleteRow');
     if (deleteRow) {
         for (let i = 0; i < tr.length; i++) {
-            if (tr[i].innerHTML == deleteRow)
-                deleteEmployee(tr[i]);
+            (tr[i].innerHTML == deleteRow) ? deleteEmployee(tr[i]) : "";
         }
         localStorage.removeItem('deleteRow');
         hideDeleteDialogBox();
@@ -393,10 +365,7 @@ function deleteSelectedEmployee() {
     }
     for (let i = 0; i < tr.length; i++) {
         let rowCheck = tr[i].querySelector(".select");
-        if (rowCheck.checked == true) {
-            deleteEmployee(tr[i]);
-            i--;
-        }
+        (rowCheck.checked == true) ? deleteEmployee(tr[i]) : "";
     }
     changeTableDeleteBtnBG("#F89191");
     let headCheckbox = document.querySelector(".employee-select");
@@ -412,7 +381,7 @@ export function deleteEmployeeRow(e) {
 function deleteEmployee(row) {
     let rowEmpId = row.querySelector(".employee-no").innerText;
     document.querySelector(".employee-table").deleteRow(row.rowIndex);
-    let newEmps = employeeList.filter((obj) => { return obj.empNo !== rowEmpId; });
+    let newEmps = employeeList.filter(employee => employee.empNo !== rowEmpId);
     employeeList = newEmps;
     localStorage.setItem('employeeList', JSON.stringify(employeeList));
 }
@@ -424,24 +393,16 @@ function sortTableByColumn(table, column, asc = true) {
     if (column == 7) {
         sortedRows = rows.sort((a, b) => {
             var _a, _b;
-            let aColText = (_a = a
-                .querySelector(`td:nth-child(${column + 1})`)
-                .textContent) === null || _a === void 0 ? void 0 : _a.trim().split("/").reverse().join("/");
-            let bColText = (_b = b
-                .querySelector(`td:nth-child(${column + 1})`)
-                .textContent) === null || _b === void 0 ? void 0 : _b.trim().split("/").reverse().join("/");
+            let aColText = (_a = a.querySelector(`td:nth-child(${column + 1})`).textContent) === null || _a === void 0 ? void 0 : _a.trim().split("/").reverse().join("/");
+            let bColText = (_b = b.querySelector(`td:nth-child(${column + 1})`).textContent) === null || _b === void 0 ? void 0 : _b.trim().split("/").reverse().join("/");
             return aColText > bColText ? 1 * dirModifier : -1 * dirModifier;
         });
     }
     else {
         sortedRows = rows.sort((a, b) => {
             var _a, _b;
-            let aColText = (_a = a
-                .querySelector(`td:nth-child(${column + 1})`)
-                .textContent) === null || _a === void 0 ? void 0 : _a.trim();
-            let bColText = (_b = b
-                .querySelector(`td:nth-child(${column + 1})`)
-                .textContent) === null || _b === void 0 ? void 0 : _b.trim();
+            let aColText = (_a = a.querySelector(`td:nth-child(${column + 1})`).textContent) === null || _a === void 0 ? void 0 : _a.trim();
+            let bColText = (_b = b.querySelector(`td:nth-child(${column + 1})`).textContent) === null || _b === void 0 ? void 0 : _b.trim();
             return aColText > bColText ? 1 * dirModifier : -1 * dirModifier;
         });
     }
@@ -449,20 +410,30 @@ function sortTableByColumn(table, column, asc = true) {
         tBody.removeChild(tBody.firstChild);
     }
     tBody.append(...sortedRows);
-    table
-        .querySelectorAll("th")
-        .forEach((th) => th.classList.remove("th-sort-asc", "th-sort-desc"));
-    table
-        .querySelector(`th:nth-child(${column + 1})`)
-        .classList.toggle("th-sort-asc", asc);
-    table
-        .querySelector(`th:nth-child(${column + 1})`)
-        .classList.toggle("th-sort-desc", !asc);
+    table.querySelectorAll("th").forEach((th) => th.classList.remove("th-sort-asc", "th-sort-desc"));
+    table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
+    table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
+}
+function exportTableToExcel() {
+    var tableElement = document.querySelector('.employee-table');
+    var sourceData = "data:text/csv;charset=utf-8,";
+    var i = 0;
+    let row;
+    while (row = tableElement.rows[i]) {
+        if (i == 0) {
+            sourceData += (['Name', 'Email', row.cells[2].innerText, row.cells[3].innerText, row.cells[4].innerText, row.cells[5].innerText, row.cells[6].innerText, row.cells[7].innerText,]).join(",") + "\r\n";
+        }
+        else {
+            if (row.querySelectorAll('td').length != 1) {
+                sourceData += ([row.cells[1].querySelector('.employee-name').innerText, row.cells[1].querySelector('.employee-email').innerText, row.cells[2].innerText, row.cells[3].innerText, row.cells[4].innerText, row.cells[5].innerText, row.cells[6].innerText, row.cells[7].innerText,]).join(",") + "\r\n";
+            }
+        }
+        i++;
+    }
+    window.location.href = encodeURI(sourceData);
 }
 function tableSearch() {
     let searchName = document.querySelector('#search-input').value.toLowerCase();
     let table = document.querySelector('.employee-table-body').querySelectorAll('.emp-table-row');
-    table.forEach((row) => {
-        row.style.display = (!row.querySelector('.employee-name').innerText.toLowerCase().startsWith(searchName)) ? "none" : "table-row";
-    });
+    table.forEach((row) => row.style.display = (!row.querySelector('.employee-name').innerText.toLowerCase().startsWith(searchName)) ? "none" : "table-row");
 }

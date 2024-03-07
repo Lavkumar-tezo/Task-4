@@ -4,7 +4,7 @@ var employeeList:EmployeeSample[] = [
     {
         "img": "./assets/images/profile.webp",
         "fname": "Rajesh",
-        "lname": "Singhg",
+        "lname": "Singh",
         "email": "rajesh.singh@tezo.com",
         "location": "HYDERABAD",
         "dept": "Product Engg",
@@ -100,9 +100,10 @@ var allRoles:RoleSample[] = [
 ];
 
 document.addEventListener('DOMContentLoaded',()=>{
-    let storedAllEmps= localStorage.getItem('employeeList');   
+    document.querySelector<HTMLImageElement>('.logo')!.src = (window.matchMedia("(max-width: 720px)").matches) ? "./assets/images/tezo-logo-min.png" : "./assets/images/tezo-logo.png"
+    let storedAllEmps: string | null= localStorage.getItem('employeeList');   
     (storedAllEmps) ? employeeList = JSON.parse(storedAllEmps):localStorage.setItem('employeeList', JSON.stringify(employeeList));
-    let storedAllroles=localStorage.getItem('roles');  
+    let storedAllroles: string | null=localStorage.getItem('roles');  
     (storedAllroles)?allRoles = JSON.parse(storedAllroles):localStorage.setItem('roles', JSON.stringify(allRoles));
     document.querySelector<HTMLImageElement>('.sidebar-min-icon')!.addEventListener("click", layoutChange);
     document.querySelector<HTMLButtonElement>('.dismiss-btn')!.addEventListener("click", dismissBtn);
@@ -113,7 +114,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
 })
 
-function layoutChange() {
+window.addEventListener("resize",() =>document.querySelector<HTMLImageElement>('.logo')!.src = (window.matchMedia("(max-width: 720px)").matches) ? "./assets/images/tezo-logo-min.png" : "./assets/images/tezo-logo.png");
+
+function layoutChange():void {
     if(window.screen.width > 720){
         document.querySelector<HTMLElement>('.wrapper')!.style.gridTemplateColumns= !isSidebarCollpased ? "1fr 20fr":"1fr 4.5fr";
         document.querySelector<HTMLElement>('.sidebar-container')!.style.padding = !isSidebarCollpased ? "0":"0 0.5rem";
@@ -131,30 +134,32 @@ function layoutChange() {
     }
 }
 
-function dismissBtn() {
+function dismissBtn():void {
     document.querySelector<HTMLElement>(".app-update-container")!.style.display = "none";
     isUpdateVisible=false;
 }
 
-function changeIcon(e:Event) {
+function changeIcon(e:Event):void {
     let div=e.currentTarget as HTMLDivElement;
     if (div.classList.contains("active") == false) {
         let imgSrc:string = div.querySelector<HTMLImageElement>('img')!.src;
-        (imgSrc.indexOf("black") > -1)?div.getElementsByTagName('img')[0].src =imgSrc.replace("black", "red"):div.getElementsByTagName('img')[0].src =imgSrc.replace("red", "black");
-        let imgSrc2 = div.getElementsByTagName('img')[1]?.getAttribute('src');
+        div.getElementsByTagName('img')[0].src = (imgSrc.indexOf("black") > -1)? imgSrc.replace("black", "red"):imgSrc.replace("red", "black")
+        let imgSrc2:string | null = div.getElementsByTagName('img')[1]?.getAttribute('src');
         if (imgSrc2) {
-            (imgSrc2.indexOf("black") > -1)?div.getElementsByTagName('img')[1].src =imgSrc2.replace("black", "red"):div.getElementsByTagName('img')[1].src =imgSrc2.replace("red", "black");
+            div.getElementsByTagName('img')[1].src= (imgSrc2.indexOf("black") > -1)? imgSrc2.replace("black", "red"):imgSrc2.replace("red", "black");
         }
     }
 }
 
-export interface EmployeeSample{ img:string, fname:string, lname:string, email:string, location:string, dept:string, role?:string, empNo:string, status:string, joiningDate:string, dob:string, projectAssigned:string, managerAssigned:string, mobile:number, dots?:string,
+export interface EmployeeSample {
+    img:string, fname:string, lname:string, email:string, location:string, dept:string, role?:string, empNo:string, status:string, joiningDate:string, dob:string, projectAssigned:string, managerAssigned:string, mobile:number, dots?:string,
 }
 
 export interface RoleSample{
     role:string, roleId:string, desc?:string, dept:string, location:string, profiles?:EmployeeSample[]
 }
 
+//  For Object created for adding eventlistners on dom content loading
 export interface EventMap {
     [selector: string]: { event: string, callback: EventListenerOrEventListenerObject };
 }

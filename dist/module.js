@@ -9,9 +9,7 @@ export function showValidInput(element, message, flag) {
     let span = parentDiv.querySelector('span');
     span.innerHTML = message;
     span.style.color = 'red';
-    element.addEventListener('change', (event) => {
-        hideRequiredMessage(event.currentTarget);
-    });
+    element.addEventListener('change', (event) => hideRequiredMessage(event.currentTarget));
 }
 export function hideRequiredMessage(element) {
     element.style.borderColor = 'rgba(227,229,233,255)';
@@ -52,23 +50,16 @@ export function updateInput(event, mainInput, parent) {
     let input = event.querySelectorAll(`.${mainInput} input`);
     let count = 0;
     for (let i = 0; i < input.length; i++) {
-        if (input[i].checked) {
-            count++;
-        }
+        (input[i].checked) ? count++ : "";
     }
     let customInput = event.querySelector(`.${parent}`);
     (customInput instanceof HTMLSpanElement) ? customInput.innerText = count == 0 ? "" : `${count} selected` : customInput.value = count == 0 ? "" : `${count} selected`;
 }
 export function toggleOptions(event, check) {
     let customOptions = event.querySelector(`.${check}`);
-    if (customOptions.style.display === "block") {
-        customOptions.style.display = "none";
-    }
-    else {
-        customOptions.style.display = "block";
-    }
+    customOptions.style.display = (customOptions.style.display === "block") ? "none" : "block";
 }
-export function createEmployeeDiv(employee, main, flag = false) {
+export function createEmployeeDiv(employee, main, flag) {
     let div = createNewElement('Div', ["employee-name-img", "w-100"]);
     let label = createNewElement('Label', ["assignable-employee", "d-flex", "jus-content-btw"]);
     let detail = createNewElement('Div', ['assign-emp-detail', 'd-flex']);
@@ -83,10 +74,8 @@ export function createEmployeeDiv(employee, main, flag = false) {
         let eventTriggredElement = event.target;
         updateInput(eventTriggredElement.parentElement.parentElement.parentElement.parentElement, 'all-employees', 'added-emp-number');
     });
-    detail.appendChild(img);
-    detail.appendChild(span);
-    label.appendChild(detail);
-    label.appendChild(input);
+    detail = addElementToParent(detail, img, span);
+    label = addElementToParent(label, detail, input);
     div.appendChild(label);
     let empid = document.createElement("span");
     empid.innerText = employee.empNo;
