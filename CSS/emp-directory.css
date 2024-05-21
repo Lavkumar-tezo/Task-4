@@ -1,0 +1,451 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+
+:root {
+  --blue: #1e90ff;
+  --blue-200: #4c5f71;
+  --blue-150: #8b95a7;
+  --green-800: #008000;
+  --blue-100: #b0b9c0;
+  --white: #ffffff;
+  --white-900: #ffffff;
+  --red-400: #fde9e9;
+  --red-800: #f44848;
+  --red-100: #fde6e6;
+  --grey-100: #f7f8f9;
+  --grey-400: #a7a9ab;
+}
+
+.toggle-filter-section {
+  background: none;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+}
+
+.alphabet-list {
+  list-style-type: none;
+}
+
+.alphabet {
+  background-color: #eaebee;
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 0.2rem;
+  width: 3%;
+  color: var(--blue-200);
+  border-radius: 5px;
+  font-size: 0.7rem;
+}
+
+.alphabet:hover {
+  background-color: var(--red-800);
+  color: var(--white);
+  opacity: 1;
+  cursor: pointer;
+}
+
+.active-alphabet-filter {
+  background-color: var(--red-800);
+  color: var(--white);
+  opacity: 1;
+  cursor: pointer;
+}
+
+.reset-filter {
+  background-color: #fdf2f2;
+  font-size: 0.7rem;
+  padding: 0.5rem;
+  border: 1px solid #fac0c0;
+  cursor: pointer;
+}
+
+.filter-opts {
+  gap: 0.5rem;
+}
+
+.filter-icon-container {
+  color: var(--red);
+  gap: 0.25rem;
+}
+
+.filter-select {
+  outline: 0;
+  font-size: 0.7rem;
+  color: var(--blue-200);
+  border: 1px solid #fac0c0;
+  border-radius: 5px;
+}
+
+.btn-container {
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.reset-btn {
+  background-color: white;
+  color: var(--red);
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--red-800);
+}
+
+.apply-btn {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+}
+
+.delete-opt-container {
+  gap: 0.4rem;
+}
+
+.employee-table-container {
+  border-radius: 5px;
+  overflow: auto;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding-bottom: 4rem;
+  z-index: 1;
+}
+
+.table-delete-btn {
+  background-color: #f89191;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+}
+
+.table-add-delete {
+  position: sticky;
+  top: 0px;
+  background-color: white;
+  padding: 0.5rem 0.8rem;
+  z-index: 2;
+  height: 3rem;
+}
+
+.employee-main-table {
+  padding: 0 0.5rem;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.employee-table {
+  width: 100%;
+  font-size: 0.7rem;
+  position: relative;
+  overflow: auto;
+  border-collapse: collapse;
+}
+
+.employee-table th,
+.employee-table td {
+  text-align: left;
+}
+
+.emp-profile-container {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.employee-img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.empl-table-header {
+  position: sticky;
+  top: 2.9rem;
+  left: 0;
+  background-color: #fafafc;
+  border-top: 1px solid rgb(196, 195, 195);
+  height: 8%;
+  z-index: 10;
+}
+
+th:not(:first-of-type)::after {
+  content: "";
+}
+
+.table-heading {
+  font-weight: 500;
+  color: var(--blue-200);
+  cursor: pointer;
+  padding-right: 0.5rem;
+}
+
+.emp-table-row {
+  border-bottom: 1px solid rgb(196, 195, 195);
+  height: 2.5rem;
+}
+
+.emp-table-row:hover {
+  background-color: #fff4f4;
+}
+
+.no-records-container {
+  height: 2.5rem;
+}
+
+.no-records-message {
+  text-align: center;
+}
+
+.empl-profile-detail{
+  gap: 0.2rem;
+  padding: 0.5rem 0;
+  width: 10rem;
+}
+
+.employee-profile {
+  overflow: hidden;
+  width: calc(100% - 2.5rem);
+}
+
+.employee-name,
+.employee-email {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+}
+
+.employee-email {
+  font-size: 85%;
+  color: var(--blue-150);
+}
+
+.employee-role {
+  text-transform: capitalize;
+}
+
+.employee-role div {
+  width: 8rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.employee-status-value {
+  background-color: #e7f4e8;
+  text-align: center;
+  color: var(--green-800);
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+
+.three-dots,
+.three-dots-header {
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.row-edit-container {
+  position: relative;
+}
+
+.empl-edit-options {
+  position: absolute;
+  right: 0;
+  width: fit-content;
+  gap: 0.2rem;
+  z-index: 10;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.empl-edit-options span:not(:last-child) {
+  border-bottom: 1px solid rgb(196, 195, 195);
+  padding-bottom: 0.25rem;
+}
+
+.row-delete,
+.row-edit,
+.status-change {
+  cursor: pointer;
+  padding: 0 0.5rem;
+}
+
+.row-edit {
+  padding-top: 0.25rem;
+}
+
+.status-change {
+  padding-bottom: 0.25rem;
+}
+
+.selected-employee,
+.employee-select {
+  min-width: 30px;
+  padding-left: 0.5rem;
+}
+
+
+.delete-pop-up {
+  width: 20rem;
+  height: 100px;
+  gap: 1rem;
+  display: none;
+  background-color: white;
+  position: fixed;
+  font-size: 0.8rem;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.delete-dialog-cross {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.cancel-delete {
+  background-color: var(--red-400);
+  color: var(--red-800);
+  border: 0;
+  text-align: center;
+  padding: 0.25rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.custom-select {
+  position: relative;
+  width: 25%;
+  font-family: Arial;
+}
+
+.custom-input {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 1.2rem;
+  padding: 0.25rem 0.5rem;
+  outline: 0;
+  border: 0;
+  border-radius: 5px;
+  background-color:var(--white);
+  cursor: pointer;
+}
+
+.custom-options {
+  position: absolute;
+  display: none;
+  width: 100%;
+  margin-top: 5px;
+  border: 1px solid var(--grey-400);
+  border-radius: 5px;
+  background-color:var(--white);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.custom-option {
+  display: block;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.custom-option input {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+
+.custom-checkmark {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 1px solid var(--grey-400);
+  background-color: #eee;
+}
+
+.custom-option input:checked~.custom-checkmark {
+  background-color:var(--blue);
+}
+@media screen and (min-width: 1580px) {
+  .employee-role div {
+    width: 10rem;
+  }
+}
+
+@media screen and (max-width: 1580px) {
+  .empl-profile-detail{
+    width: 12rem;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .empl-profile-detail{
+    width: 10rem;
+  }
+}
+
+@media screen and (max-width: 980px) {
+  .filter-opts {
+    gap: 0.2rem;
+  }
+
+  .btn-container {
+    gap: 0.2rem;
+  }
+
+  .table-add-delete,
+  .employee-main-table {
+    width: 120%;
+  }
+
+}
+
+@media screen and (max-width: 720px) {
+  .alphabet-list {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .alphabet {
+    font-size: 1rem;
+    padding: 0.2rem;
+    width: 7%;
+  }
+
+  .employee-table {
+    font-size: 1rem;
+  }
+
+  .table-add-delete,
+  .employee-main-table {
+    width: 150%;
+  }
+}
+
+@media screen and (max-width:600px) {
+  .custom-input {
+    font-size: 0.9rem;
+  }
+
+  .table-delete-arrow {
+    height: 1.2rem;
+  }
+
+  .table-delete-btn {
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 400px) {
+
+  .table-add-delete,
+  .employee-main-table {
+    width: 180%;
+  }
+}
